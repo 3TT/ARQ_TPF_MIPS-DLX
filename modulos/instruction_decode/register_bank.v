@@ -29,6 +29,12 @@ module register_bank(input reg_write,
 	 
 reg [31:0] registro[0:31];
 
+initial registro[0] = 1;
+initial registro[1] = 666;
+initial registro[2] = 444;
+initial registro[3] = 888;
+initial registro[4] = 9;
+
 assign busa = registro[ra];
 assign busb = registro[rb];
 

@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module instruction_decode(input [31:0] instruc,
-									input reg_write,
+									//input reg_write, //Esto esta comentado porque el control unit tenemos que decidir si va afuera del modulo intruction decode o va adentro.
 									input [4:0] rw,
 									input [31:0] busw,
 									output [31:0] busa,
@@ -27,14 +27,17 @@ module instruction_decode(input [31:0] instruc,
 									output reg [31:0] immed_ext
     );
 	 
+wire [3:0] EX_control;
+wire [3:0] M_control;
+wire [1:0] WB_control;
 
-always @(instruc)
+always @(instruc) //Este es el de la extension de signo.
 begin
 	immed_ext = {{16{instruc[15]}},{instruc[15:0]}};
 end
 
 register_bank registers(
-							.reg_write(reg_write),
+							.reg_write(WB_control[1]),
 							.ra(instruc[25:21]),
 							.rb(instruc[20:16]),
 							.rw(rw), //Si es cero lee los registros ra y rb, si es distinto de cero guarda en rw el dato de busw
@@ -43,5 +46,12 @@ register_bank registers(
 							.busb(busb)
     );
 	 
+control_unit ctrl_unit( .opcode(instruc[31:26]),
+							.EX_control(EX_control),
+							.M_control(M_control),
+							.WB_control(WB_control)
+    );
+
+
 
 endmodule

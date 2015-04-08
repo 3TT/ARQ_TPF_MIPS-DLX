@@ -8,7 +8,7 @@
 <!-- Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.    -->
 
 <messages>
-<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;/media/laryc05/MARINO_4/instruc_fetch/ipcore_dir/instruc_mem.v&quot; into library work</arg>
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;/home/laryc05/Workspace.arq/TPF_MIPS_dlx/ARQ_TPF_MIPS-DLX/ipcore_dir/instruc_mem.v&quot; into library work</arg>
 </msg>
 
 </messages>

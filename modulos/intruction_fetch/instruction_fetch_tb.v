@@ -56,7 +56,7 @@ module instruction_fetch_tb;
 	end
 	
 	always  
-       #5  clock =  ! clock;
+       #5  clock = !clock;
  
 	initial 
 		#100  $finish;  

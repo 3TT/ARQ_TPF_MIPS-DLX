@@ -28,12 +28,12 @@ module register_bank(input reg_write,
     );
 	 
 reg [31:0] registro[0:31];
-
-initial registro[0] = 1;
-initial registro[1] = 666;
-initial registro[2] = 444;
-initial registro[3] = 888;
-initial registro[4] = 9;
+integer i; 
+initial 
+	begin 
+		for (i = 1; i < 32; i = i+1) //No se toma el cero porque segun el Negro el registro cero tiene que ir conectado a tierra para que sea cero.
+			registro[i] = i;
+	end
 
 assign busa = registro[ra];
 assign busb = registro[rb];

@@ -22,14 +22,18 @@ module instruction_decode(input [31:0] instruc,
 									//input reg_write, //Esto esta comentado porque el control unit tenemos que decidir si va afuera del modulo intruction decode o va adentro.
 									input [4:0] rw,
 									input [31:0] busw,
+									output [3:0] EX_control,
+									output [3:0] M_control,
+									output [1:0] WB_control,
 									output [31:0] busa,
 									output [31:0] busb,
 									output reg [31:0] immed_ext
+									
     );
 	 
-wire [3:0] EX_control;
+/*wire [3:0] EX_control;
 wire [3:0] M_control;
-wire [1:0] WB_control;
+wire [1:0] WB_control;*/
 
 always @(instruc) //Este es el de la extension de signo.
 begin

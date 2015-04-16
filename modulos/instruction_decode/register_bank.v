@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ps / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -28,9 +28,11 @@ module register_bank(input reg_write,
     );
 	 
 reg [31:0] registro[0:31];
-integer i; 
+integer i;
+ 
 initial 
-	begin 
+	begin
+		registro[0]=0;
 		for (i = 1; i < 32; i = i+1) //No se toma el cero porque segun el Negro el registro cero tiene que ir conectado a tierra para que sea cero.
 			registro[i] = i;
 	end

@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ps / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -57,6 +57,36 @@ begin
 			M_control = 4'b000X;
 			WB_control = 2'b11;
 		end
+	6'b001000: //ADDI
+		begin
+			EX_control = 4'b1110;
+			M_control = 4'b000X;
+			WB_control = 2'b11;
+		end	
+	6'b001100: //ANDI
+		begin
+			EX_control = 4'b1110;
+			M_control = 4'b000X;
+			WB_control = 2'b11;
+		end	
+	6'b001010: //SLTI
+		begin
+			EX_control = 4'b1110;
+			M_control = 4'b000X;
+			WB_control = 2'b11;
+		end	
+	6'b001101: //ORI
+		begin
+			EX_control = 4'b1110;
+			M_control = 4'b000X;
+			WB_control = 2'b11;
+		end	
+	6'b001110: //XORI
+		begin
+			EX_control = 4'b1110;
+			M_control = 4'b000X;
+			WB_control = 2'b11;
+		end	
 	default: 
 		begin
 			EX_control = 4'b0000;

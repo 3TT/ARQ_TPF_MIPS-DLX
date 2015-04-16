@@ -29,7 +29,7 @@ module instruction_fetch(
 wire [9:0]PC;
 wire [9:0] PC_current;
 	 
-blk_mem_gen_v7_3 im(
+instruc_mem im(
   .clka(clock),
   .wea(1'b0),
   .addra(PC_current),
@@ -37,7 +37,7 @@ blk_mem_gen_v7_3 im(
   .douta(instruc_reg)
 );
 
-mux_2to1 mux(
+mux_2to1 #(10) mux (
 	.in_a(jump_address),
 	.in_b(PC_plus_1),
 	.sel(PC_sel),

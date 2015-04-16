@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ps / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -18,12 +18,15 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module mux_2to1(
-	input [9:0]in_a,
-	input [9:0]in_b,
-	input sel,
-	output reg [9:0]out
-    );
+
+module mux_2to1(in_a,in_b,sel,out);
+
+parameter bus_size = 10;
+
+input [bus_size-1:0]in_a;
+input [bus_size-1:0]in_b;
+input sel;
+output reg [bus_size-1:0]out;
 
 always@(sel,in_a,in_b)
 begin

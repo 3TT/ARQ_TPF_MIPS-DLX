@@ -38,8 +38,8 @@ instruc_mem im(
 );
 
 mux_2to1 #(10) mux (
-	.in_a(jump_address),
-	.in_b(PC_plus_1),
+	.in_a(PC_plus_1),
+	.in_b(jump_address),
 	.sel(PC_sel),
 	.out(PC)
     );

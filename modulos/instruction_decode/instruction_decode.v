@@ -30,7 +30,7 @@ module instruction_decode(input [31:0] instruc,
 									output [31:0] bus_b,
 									output reg [31:0] immed_ext,
 									output [9:0] jump_address,
-									output branch_sel_test//Esto va a ser PC_sel...
+									output branch_sel//Esto va a ser PC_sel...
 									
     );
 	 
@@ -53,7 +53,7 @@ comparer #(32) branch_cmp(.a(bus_a),
 branch_logic branch_log(
 							.DE_control(DE_control),
 							.cmp(cmp_out),
-							.PC_sel(branch_sel_test)
+							.PC_sel(branch_sel)
 							);
 
 adder #(10) add(

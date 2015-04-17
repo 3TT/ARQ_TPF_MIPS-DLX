@@ -21,7 +21,7 @@
 module execution(//inout  [1:0] WB_control,
 						//inout  [3:0] MEM_control,
 						input  [3:0] EX_control,
-						//input PC_plus_1, //el sumador de direccion de salto se pasa a la etapa de decode
+						//input [9:0] current_PC, //el sumador de direccion de salto se pasa a la etapa de decode
 						input [31:0] busa,
 						input [31:0] busb,
 						input [31:0] immed_ext,
@@ -37,13 +37,13 @@ module execution(//inout  [1:0] WB_control,
 wire [3:0] ALU_ctrl;
 wire [31:0] ALU_b;
 assign data_write=busb;
+
 alu ALU(.a(busa),
 			.b(ALU_b),
 			.op(ALU_ctrl),
 			.rdo(ALU_out),
 			.zero(zero)
 			);
-
 
 mux_2to1 #(32) mux_alu_src (
 							.in_a(busb),

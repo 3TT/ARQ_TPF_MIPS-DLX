@@ -20,14 +20,17 @@
 //////////////////////////////////////////////////////////////////////////////////
 module instruction_decode(input [31:0] instruc,
 									//input reg_write, //Esto esta comentado porque el control unit tenemos que decidir si va afuera del modulo intruction decode o va adentro.
+									input [9:0] current_PC,
 									input [4:0] rw,
 									input [31:0] busw,
 									output [3:0] EX_control,
-									output [3:0] M_control,
+									output [1:0] M_control,
 									output [1:0] WB_control,
 									output [31:0] busa,
 									output [31:0] busb,
-									output reg [31:0] immed_ext
+									output reg [31:0] immed_ext,
+									output [9:0] jump_address,
+									output branch_sel_test//Esto va a ser PC_sel...
 									
     );
 	 
@@ -40,6 +43,25 @@ begin
 	immed_ext = {{16{instruc[15]}},{instruc[15:0]}};
 end
 
+wire cmp_out;
+wire [1:0] DE_control;
+
+comparer #(10) branch_cmp(.a(bus_a),
+								  .b(bus_b),
+								  .cmp_out(cmp_out)
+								  );
+branch_logic branch_log(
+							.DE_control(DE_control),
+							.cmp(cmp_out),
+							.PC_sel(branch_sel_test)
+							);
+
+adder #(10) add(
+	.in_a(PC_current),
+	.in_b(immed_ext[9:0]),
+   .sum(jump_address)
+    );
+	 
 register_bank registers(
 							.reg_write(WB_control[1]),
 							.ra(instruc[25:21]),
@@ -51,6 +73,7 @@ register_bank registers(
     );
 	 
 control_unit ctrl_unit( .opcode(instruc[31:26]),
+							.DE_control(DE_control),
 							.EX_control(EX_control),
 							.M_control(M_control),
 							.WB_control(WB_control)

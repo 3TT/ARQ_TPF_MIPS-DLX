@@ -21,6 +21,6 @@
 module comparer(a,b,cmp_out);
 parameter BUS_SIZE = 10;
 input [BUS_SIZE-1:0] a,b;
-output sub;
-assign sub = (a == b);
+output cmp_out;
+assign cmp_out = (a == b);
 endmodule

@@ -22,8 +22,8 @@ module execution(//inout  [1:0] WB_control,
 						//inout  [3:0] MEM_control,
 						input  [3:0] EX_control,
 						//input [9:0] current_PC, //el sumador de direccion de salto se pasa a la etapa de decode
-						input [31:0] busa,
-						input [31:0] busb,
+						input [31:0] bus_a,
+						input [31:0] bus_b,
 						input [31:0] immed_ext,
 						input [31:0] instruc,
 						output zero,
@@ -36,9 +36,9 @@ module execution(//inout  [1:0] WB_control,
 
 wire [3:0] ALU_ctrl;
 wire [31:0] ALU_b;
-assign data_write=busb;
+assign data_write=bus_b;
 
-alu ALU(.a(busa),
+alu ALU(.a(bus_a),
 			.b(ALU_b),
 			.op(ALU_ctrl),
 			.rdo(ALU_out),
@@ -46,7 +46,7 @@ alu ALU(.a(busa),
 			);
 
 mux_2to1 #(32) mux_alu_src (
-							.in_a(busb),
+							.in_a(bus_b),
 							.in_b(immed_ext),
 							.sel(EX_control[2]),//(ALU_scr)
 							.out(ALU_b)

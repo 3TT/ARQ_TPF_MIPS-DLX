@@ -24,7 +24,7 @@ module MIPS_DLX(input clock,
 				input [4:0] rw,           	//Agregada porque todavia no esta en uso, de esta forma obligamos al ise a que no los conecte como se le cante.
 				//input [9:0] jump_address,	//Agregada porque todavia no esta en uso, de esta forma obligamos al ise a que no los conecte como se le cante.
 				//output [9:0] PC_plus_1,		//Agregada porque todavia no esta en uso, de esta forma obligamos al ise a que no los conecte como se le cante.
-				output [3:0] M_control, //Agregamos un bit de control para los brach, es el bit menos significativo, es BOP (Brach Operation).
+				output [1:0] M_control, //Agregamos un bit de control para los brach, es el bit menos significativo, es BOP (Brach Operation).
 				output [1:0] WB_control,
 				output zero,
 				output [31:0] ALU_out,
@@ -54,8 +54,8 @@ instruction_decode ID_instance(.instruc(instruc_reg),
 									.EX_control(EX_control),
 									.M_control(M_control), //Agregamos un bit de control para los brach, es el bit menos significativo, es BOP (Brach Operation).
 									.WB_control(WB_control),
-									.busa(bus_a),
-									.busb(bus_b),
+									.bus_a(bus_a),
+									.bus_b(bus_b),
 									.immed_ext(immed_ext),
 									.jump_address(jump_address),
 									.branch_sel_test(branch_sel_test)
@@ -66,8 +66,8 @@ instruction_decode ID_instance(.instruc(instruc_reg),
 	 
 execution EX_instance(
 							.EX_control(EX_control),
-							.busa(bus_a),
-							.busb(bus_b),
+							.bus_a(bus_a),
+							.bus_b(bus_b),
 							.immed_ext(immed_ext),
 							.instruc(instruc_reg),
 							.zero(zero),

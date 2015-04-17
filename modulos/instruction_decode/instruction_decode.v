@@ -26,8 +26,8 @@ module instruction_decode(input [31:0] instruc,
 									output [3:0] EX_control,
 									output [1:0] M_control,
 									output [1:0] WB_control,
-									output [31:0] busa,
-									output [31:0] busb,
+									output [31:0] bus_a,
+									output [31:0] bus_b,
 									output reg [31:0] immed_ext,
 									output [9:0] jump_address,
 									output branch_sel_test//Esto va a ser PC_sel...
@@ -46,7 +46,7 @@ end
 wire cmp_out;
 wire [1:0] DE_control;
 
-comparer #(10) branch_cmp(.a(bus_a),
+comparer #(32) branch_cmp(.a(bus_a),
 								  .b(bus_b),
 								  .cmp_out(cmp_out)
 								  );
@@ -57,7 +57,7 @@ branch_logic branch_log(
 							);
 
 adder #(10) add(
-	.in_a(PC_current),
+	.in_a(current_PC),
 	.in_b(immed_ext[9:0]),
    .sum(jump_address)
     );
@@ -68,8 +68,8 @@ register_bank registers(
 							.rb(instruc[20:16]),
 							.rw(rw), //Si es cero lee los registros ra y rb, si es distinto de cero guarda en rw el dato de busw
 							.busw(busw),
-							.busa(busa),
-							.busb(busb)
+							.bus_a(bus_a),
+							.bus_b(bus_b)
     );
 	 
 control_unit ctrl_unit( .opcode(instruc[31:26]),

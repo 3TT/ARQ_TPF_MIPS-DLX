@@ -21,7 +21,7 @@
 module branch_logic(
 							input [1:0] DE_control,
 							input cmp,
-							output reg PC_sel
+							output PC_sel
 							);
 
 assign PC_sel = ((DE_control[0] ~^ cmp) & DE_control[1]);

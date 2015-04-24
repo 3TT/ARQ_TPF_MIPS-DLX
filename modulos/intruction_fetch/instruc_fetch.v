@@ -22,7 +22,7 @@ module instruction_fetch(
 		input PC_sel,
 		input clock,
 		input [9:0]jump_address,
-		output [31:0]instruc_reg,
+		output [31:0]instruc,
 		output [9:0]PC_plus_1
     );
 
@@ -34,7 +34,7 @@ instruc_mem im(
   .wea(1'b0),
   .addra(PC_current),
   .dina(0),
-  .douta(instruc_reg)
+  .douta(instruc)
 );
 
 mux_2to1 #(10) mux (

@@ -24,7 +24,7 @@ module MIPS_DLX(input clock,
 				output zero
     );
 
-wire [31:0] instruc_reg;
+wire [31:0] instruc;
 wire [9:0] PC_plus_1;
 wire [9:0] jump_address;
 wire PC_sel;
@@ -33,7 +33,7 @@ instruction_fetch IF_instance(
 		.PC_sel(PC_sel),
 		.clock(clock),
 		.jump_address(jump_address),
-		.instruc_reg(instruc_reg),
+		.instruc(instruc),
 		.PC_plus_1(PC_plus_1)
     );
 
@@ -44,7 +44,7 @@ wire [1:0]M_control;
 wire [1:0]WB_control;
 wire [31:0] busw;
 
-instruction_decode ID_instance(.instruc(instruc_reg),
+instruction_decode ID_instance(.instruc(instruc),
 									//input reg_write, //Esto esta comentado porque el control unit tenemos que decidir si va afuera del modulo intruction decode o va adentro.
 									.rw(rw),
 									.current_PC(PC_plus_1),
@@ -69,7 +69,7 @@ execution EX_instance(
 							.bus_a(bus_a),
 							.bus_b(bus_b),
 							.immed_ext(immed_ext),
-							.instruc(instruc_reg),
+							.instruc(instruc),
 							.zero(zero),
 							.ALU_out(ALU_out),
 							.data_write(data_write),

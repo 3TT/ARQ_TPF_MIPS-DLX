@@ -21,8 +21,12 @@
 module MIPS_DLX(input clock,
 				//input [9:0] jump_address,	//Agregada porque todavia no esta en uso, de esta forma obligamos al ise a que no los conecte como se le cante.
 				//output [9:0] PC_plus_1,		//Agregada porque todavia no esta en uso, de esta forma obligamos al ise a que no los conecte como se le cante.
+				input reset,
 				output zero
     );
+
+wire reset;
+
 
 wire [31:0] instruc;
 wire [9:0] PC_plus_1;
@@ -37,17 +41,30 @@ instruction_fetch IF_instance(
 		.PC_plus_1(PC_plus_1)
     );
 
-wire [4:0] rw;
+wire [31:0] instruc_latch_IF_ID;
+wire [9:0] PC_plus_1_latch;
+
+
+IF_ID IF_ID_latch(.enable(clock),
+				 .reset(reset),
+				 .instruc_in(instruc),
+				 .PC_plus_1_in(PC_plus_1),
+				 .instruc_out(instruc_latch_IF_ID),
+				 .PC_plus_1_out(PC_plus_1_latch)
+    );
+	 
+//wire [4:0] rw;
 wire [31:0] bus_a, bus_b, immed_ext;
 wire [3:0]EX_control;
 wire [1:0]M_control;
 wire [1:0]WB_control;
 wire [31:0] busw;
+wire [4:0] rw_latch_MEM_WB;
 
-instruction_decode ID_instance(.instruc(instruc),
+instruction_decode ID_instance(.instruc(instruc_latch_IF_ID),
 									//input reg_write, //Esto esta comentado porque el control unit tenemos que decidir si va afuera del modulo intruction decode o va adentro.
-									.rw(rw),
-									.current_PC(PC_plus_1),
+									.rw(rw_latch_MEM_WB),
+									.current_PC(PC_plus_1_latch),
 									.busw(busw),
 									.EX_control(EX_control),
 									.M_control(M_control), //Agregamos un bit de control para los brach, es el bit menos significativo, es BOP (Brach Operation).
@@ -58,44 +75,113 @@ instruction_decode ID_instance(.instruc(instruc),
 									.jump_address(jump_address),
 									.branch_sel(PC_sel)
     );
+
+wire [31:0] instruc_latch_ID_EX;
+//wire [4:0] rw_latch;
+wire [31:0] bus_a_latch, bus_b_latch, immed_ext_latch;
+wire [3:0]EX_control_latch;
+wire [31:0] busw_latch;
+wire [1:0]M_control_latch_ID_EX;
+wire [1:0]WB_control_latch_ID_EX; 
+
+ID_EX ID_EX_latch (
+    .enable(clock), 
+    .reset(reset), 
+    .EX_control_in(EX_control), 
+    .M_control_in(M_control), 
+    .WB_control_in(WB_control), 
+    .bus_a_in(bus_a), 
+    .bus_b_in(bus_b), 
+    .immed_ext_in(immed_ext), 
+    .instruc_in(instruc_latch_IF_ID), 
+    .EX_control_out(EX_control_latch), 
+    .M_control_out(M_control_latch_ID_EX), 
+    .WB_control_out(WB_control_latch_ID_EX), 
+    .bus_a_out(bus_a_latch), 
+    .bus_b_out(bus_b_latch), 
+    .immed_ext_out(immed_ext_latch), 
+    .instruc_out(instruc_latch_ID_EX)
+    );
 	 
 //wire [3:0]M_control;
 //wire [1:0]WB_control;
 wire [31:0] data_write;
 wire [31:0]ALU_out;		
+wire [4:0] rw;
 
 execution EX_instance(
-							.EX_control(EX_control),
-							.bus_a(bus_a),
-							.bus_b(bus_b),
-							.immed_ext(immed_ext),
-							.instruc(instruc),
+							.EX_control(EX_control_latch),
+							.bus_a(bus_a_latch),
+							.bus_b(bus_b_latch),
+							.immed_ext(immed_ext_latch),
+							.instruc(instruc_latch_ID_EX),
 							.zero(zero),
 							.ALU_out(ALU_out),
 							.data_write(data_write),
 							.WB_register(rw)
 							);
+
+//wire [3:0]M_control;
+//wire [1:0]WB_control;
+
+wire [31:0] data_write_latch;
+wire [31:0] ALU_out_latch;
+wire [1:0] M_control_latch_EX_MEM;
+wire [1:0] WB_control_latch_EX_MEM; 
+wire [4:0] rw_latch_EX_MEM;
+
+EX_MEM EX_MEM_latch (
+    .enable(clock), 
+    .reset(reset), 
+    .M_control_in(M_control_latch_ID_EX), 
+    .WB_control_in(WB_control_latch_ID_EX), 
+    .ALU_out_in(ALU_out_latch), 
+    .data_write_in(data_write_latch), 
+    .rw_in(rw), 
+    .M_control_out(M_control_latch_EX_MEM), 
+    .WB_control_out(WB_control_latch_EX_MEM), 
+    .ALU_out_out(ALU_out_latch), 
+    .data_write_out(data_write_latch), 
+    .rw_out(rw_latch_EX_MEM)
+    );
+
 							
 //wire [31:0] data_write; 
 wire[31:0]data_from_mem;
 wire[31:0]data_from_ALU;
-					
+		
 data_memory DM_instance(
 						.clock(clock),
-						.M_control(M_control),
-						.data_write(data_write),
-						.ALU_out(ALU_out),	//salida puenteada de la etapa anterior(igual a address)
+						.M_control(M_control_latch_EX_MEM),
+						.data_write(data_write_latch),
+						.ALU_out(ALU_out_latch),	//salida puenteada de la etapa anterior(igual a address)
 						.data_from_mem(data_from_mem),
 						.data_from_ALU(data_from_ALU)
 
     );							
-							
 
+//wire [31:0] data_write; 
+wire[31:0] data_from_mem_latch;
+wire[31:0] data_from_ALU_latch;
+wire [1:0] WB_control_latch_MEM_WB; 
+							
+MEM_WB MEM_WB_latch  (
+    .enable(clock), 
+    .reset(reset), 
+    .WB_control_in(WB_control_latch_EX_MEM), 
+    .data_from_mem_in(data_from_mem), 
+    .data_from_ALU_in(data_from_ALU), 
+    .rw_in(rw_latch_EX_MEM), 
+    .WB_control_out(WB_control_latch_MEM_WB), 
+    .data_from_mem_out(data_from_mem_latch), 
+    .data_from_ALU_out(data_from_ALU_latch), 
+    .rw_out(rw_latch_MEM_WB)
+    );
 							
 write_back WB_instance(
-						.WB_control(WB_control),
-						.data_from_mem(data_from_mem),
-						.data_from_ALU(data_from_ALU),
+						.WB_control(WB_control_latch_MEM_WB),
+						.data_from_mem(data_from_mem_latch),
+						.data_from_ALU(data_from_ALU_latch),
 						.bus_w(busw)
     );							
 endmodule

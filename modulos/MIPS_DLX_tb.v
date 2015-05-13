@@ -4,10 +4,10 @@
 // Company: 
 // Engineer:
 //
-// Create Date:   14:41:06 04/10/2015
+// Create Date:   18:05:15 05/13/2015
 // Design Name:   MIPS_DLX
-// Module Name:   /home/laryc05/Workspace.arq/TPF_MIPS_dlx/MIPS_DLX_tb.v
-// Project Name:  TPF_MIPS_dlx
+// Module Name:   /home/santi/workspace.ISE/TPF_MIPS-DLX/MIPS_DLX_tb.v
+// Project Name:  TPF_MIPS-DLX
 // Target Device:  
 // Tool versions:  
 // Description: 
@@ -26,41 +26,22 @@ module MIPS_DLX_tb;
 
 	// Inputs
 	reg clock;
-	reg PC_sel;
-	reg [31:0] busw;
+	reg reset;
 
 	// Outputs
-	wire [3:0] EX_control;
-	wire [3:0] M_control;
-	wire [1:0] WB_control;
-	wire [31:0] busa;
-	wire [31:0] busb;
-	wire [31:0] immed_ext;
+	wire zero;
 
 	// Instantiate the Unit Under Test (UUT)
 	MIPS_DLX uut (
 		.clock(clock), 
-		.PC_sel(PC_sel), 
-		.busw(busw), 
-		.EX_control(EX_control), 
-		.M_control(M_control), 
-		.WB_control(WB_control), 
-		.busa(busa), 
-		.busb(busb), 
-		.immed_ext(immed_ext)
+		.reset(reset), 
+		.zero(zero)
 	);
 
 	initial begin
 		// Initialize Inputs
 		clock = 0;
-		PC_sel = 1;
-		busw = 0;
-		
-		/*registro[0] = 99;
-		registro[1] = 666;
-		registro[2] = 444;
-		registro[3] = 888;
-		registro[4] = 9;*/
+		reset = 1'b1;
 
 		// Wait 100 ns for global reset to finish
 		#100;
@@ -69,8 +50,7 @@ module MIPS_DLX_tb;
 
 	end
 	
-	always
-		#10	clock = !clock;
-      
+      always #5 clock=!clock;
+		
 endmodule
 

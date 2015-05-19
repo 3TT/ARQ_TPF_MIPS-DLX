@@ -26,7 +26,8 @@ module instruction_fetch(
 		output [9:0]PC_plus_1
     );
 
-wire [9:0]PC;
+
+wire [9:0] PC;
 wire [9:0] PC_current;
 	 
 instruc_mem im(

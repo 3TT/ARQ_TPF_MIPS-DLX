@@ -33,6 +33,10 @@ module instruction_decode(input [31:0] instruc,
 									output branch_sel//Esto va a ser PC_sel...
 									
     );
+
+
+
+
 	 
 /*wire [3:0] EX_control;
 wire [3:0] M_control;

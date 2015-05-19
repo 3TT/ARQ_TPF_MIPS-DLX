@@ -19,6 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module register_bank(input reg_write,
+							input clock,
 							input [4:0] ra,
 							input [4:0] rb,
 							input [4:0] rw, //Si es cero lee los registros ra y rb, si es distinto de cero guarda en rw el dato de busw
@@ -40,9 +41,23 @@ initial
 assign bus_a = registro[ra];
 assign bus_b = registro[rb];
 
-always @(posedge reg_write)
+//always @(reg_write)
+//	begin
+//		if(reg_write)
+//			begin
+//				registro[rw] = busw;
+//			end
+//		else
+//			begin
+//				registro[rw] = registro[rw];
+//			end
+//	end
+always @(posedge clock)//--> Preguntarle al profe porq quitando el posedge tira latches para cada uno de los bits de los regitros del banco de registro.
 	begin
-		registro[rw] = busw;
+		if(reg_write == 1)
+			registro[rw] = busw;
+		else
+			registro[rw] = registro[rw];
 	end
 
 endmodule

@@ -36,7 +36,7 @@ module EX_MEM(
 initial ALU_out_out=0;
 initial data_write_out=0;
 
-always@(enable or reset or M_control_in or WB_control_in or ALU_out_in or data_write_in or rw_in)
+always@(posedge enable or negedge reset)
 begin
 	if(!reset)
 	begin

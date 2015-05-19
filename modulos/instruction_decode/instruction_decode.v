@@ -19,6 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module instruction_decode(input [31:0] instruc,
+									input clock,
 									//input reg_write, //Esto esta comentado porque el control unit tenemos que decidir si va afuera del modulo intruction decode o va adentro.
 									input [9:0] current_PC,
 									input [4:0] rw,
@@ -68,6 +69,7 @@ adder #(10) add(
 	 
 register_bank registers(
 							.reg_write(WB_control[1]),
+							.clock(clock),
 							.ra(instruc[25:21]),
 							.rb(instruc[20:16]),
 							.rw(rw), //Si es cero lee los registros ra y rb, si es distinto de cero guarda en rw el dato de busw

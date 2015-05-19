@@ -25,8 +25,6 @@ module MIPS_DLX(input clock,
 				output zero
     );
 
-wire reset;
-
 
 wire [31:0] instruc;
 wire [9:0] PC_plus_1;
@@ -62,6 +60,7 @@ wire [31:0] busw;
 wire [4:0] rw_latch_MEM_WB;
 
 instruction_decode ID_instance(.instruc(instruc_latch_IF_ID),
+									.clock(clock),
 									//input reg_write, //Esto esta comentado porque el control unit tenemos que decidir si va afuera del modulo intruction decode o va adentro.
 									.rw(rw_latch_MEM_WB),
 									.current_PC(PC_plus_1_latch),

@@ -35,8 +35,15 @@ module ID_EX(  input enable,
 					output reg [31:0] immed_ext_out,
 					output reg [31:0] instruc_out
     );
-
-always@(enable or reset or EX_control_in or M_control_in or WB_control_in or bus_a_in or bus_b_in or immed_ext_in or instruc_in)
+initial EX_control_out=0;
+initial M_control_out=0;
+initial WB_control_out=0;
+initial bus_a_out=0;
+initial bus_b_out=0;
+initial immed_ext_out=0;
+initial instruc_out=0;
+					
+always@(posedge enable or negedge reset)
 begin
 	if(!reset)
 	begin

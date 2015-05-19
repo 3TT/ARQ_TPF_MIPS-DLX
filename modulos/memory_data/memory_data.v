@@ -36,7 +36,7 @@ module data_memory(
 assign data_from_ALU=ALU_out;
 
 data_mem dm(
-  .clka(clock),
+  .clka(!clock),
   .wea(M_control[0]),
   .addra(ALU_out[9:0]),
   .dina(data_write),

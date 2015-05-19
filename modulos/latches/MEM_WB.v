@@ -32,7 +32,7 @@ module MEM_WB( input enable,
 
 initial data_from_ALU_out=0;
 
-always@(enable or reset or WB_control_in or data_from_mem_in or data_from_ALU_in or rw_in)
+always@(posedge enable or negedge reset)
 begin
 	if(!reset)
 	begin

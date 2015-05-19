@@ -25,8 +25,10 @@ module IF_ID(input enable,
 				 output reg[31:0]instruc_out,
 				 output reg[9:0]PC_plus_1_out
     );
- 
-always@(enable or reset or instruc_in or PC_plus_1_in)
+initial instruc_out=0;
+initial PC_plus_1_out=0;
+
+always@(posedge enable, negedge reset)
 begin
 	if(!reset)
 	begin

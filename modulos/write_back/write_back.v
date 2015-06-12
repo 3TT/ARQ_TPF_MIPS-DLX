@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module write_back(
-						input [1:0]WB_control,
+						input WB_control,
 						input [31:0]data_from_mem,
 						input [31:0]data_from_ALU,
 						output [31:0]bus_w
@@ -28,7 +28,7 @@ module write_back(
 mux_2to1 #(32) mux (
 	.in_a(data_from_mem),
 	.in_b(data_from_ALU),
-	.sel(WB_control[0]),
+	.sel(WB_control),
 	.out(bus_w)
     );
 

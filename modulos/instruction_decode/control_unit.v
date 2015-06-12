@@ -25,6 +25,14 @@ module control_unit(input [5:0] opcode,
 							output reg [1:0] WB_control
     );
 
+initial
+	begin
+		EX_control = 4'b0000;
+		M_control = 2'b00;
+		WB_control = 2'b00;
+		DE_control = 2'b00;
+	end
+
 always@(opcode)
 begin
 	case (opcode)

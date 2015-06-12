@@ -58,6 +58,8 @@ wire [1:0]M_control;
 wire [1:0]WB_control;
 wire [31:0] busw;
 wire [4:0] rw_latch_MEM_WB;
+wire [1:0] WB_control_latch_MEM_WB; 
+
 
 instruction_decode ID_instance(.instruc(instruc_latch_IF_ID),
 									.clock(clock),
@@ -65,6 +67,7 @@ instruction_decode ID_instance(.instruc(instruc_latch_IF_ID),
 									.rw(rw_latch_MEM_WB),
 									.current_PC(PC_plus_1_latch),
 									.busw(busw),
+									.reg_write(WB_control_latch_MEM_WB[1]),
 									.EX_control(EX_control),
 									.M_control(M_control), //Agregamos un bit de control para los brach, es el bit menos significativo, es BOP (Brach Operation).
 									.WB_control(WB_control),
@@ -162,7 +165,6 @@ data_memory DM_instance(
 //wire [31:0] data_write; 
 wire[31:0] data_from_mem_latch;
 wire[31:0] data_from_ALU_latch;
-wire [1:0] WB_control_latch_MEM_WB; 
 							
 MEM_WB MEM_WB_latch  (
     .enable(clock), 
@@ -178,7 +180,7 @@ MEM_WB MEM_WB_latch  (
     );
 							
 write_back WB_instance(
-						.WB_control(WB_control_latch_MEM_WB),
+						.WB_control(WB_control_latch_MEM_WB[0]),
 						.data_from_mem(data_from_mem_latch),
 						.data_from_ALU(data_from_ALU_latch),
 						.bus_w(busw)

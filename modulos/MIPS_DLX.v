@@ -184,5 +184,16 @@ write_back WB_instance(
 						.data_from_mem(data_from_mem_latch),
 						.data_from_ALU(data_from_ALU_latch),
 						.bus_w(busw)
-    );							
+    );
+
+/*forwarding_unit forward_unit (
+    .rt(instruc_latch_IF_ID[X:X]), 
+    .rs(instruc_latch_IF_ID[X:X]), 
+    .rw_EX_MEM(rw_EX_MEM), 
+    .rw_MEM_WB(rw_MEM_WB), 
+    .mem_read_MEM_ctrl(mem_read_MEM_ctrl), 
+    .write_reg_WB_ctrl(write_reg_WB_ctrl), 
+    .mux_ALU_a(mux_ALU_a), 
+    .mux_ALU_b(mux_ALU_b)
+    );*/	 
 endmodule

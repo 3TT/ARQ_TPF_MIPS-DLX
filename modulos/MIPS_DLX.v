@@ -108,10 +108,13 @@ ID_EX ID_EX_latch (
 //wire [3:0]M_control;
 //wire [1:0]WB_control;
 wire [31:0] data_write;
-wire [31:0]ALU_out;		
+wire [31:0]ALU_out;
+wire [31:0] ALU_out_latch;		
 wire [4:0] rw;
+wire [1:0] forward_sel_a;
+wire [1:0] forward_sel_b;
 
-execution EX_instance(
+/*execution EX_instance(
 							.EX_control(EX_control_latch),
 							.bus_a(bus_a_latch),
 							.bus_b(bus_b_latch),
@@ -121,13 +124,29 @@ execution EX_instance(
 							.ALU_out(ALU_out),
 							.data_write(data_write),
 							.WB_register(rw)
-							);
+							);*/
+							
+execution EX_instance (
+							 .EX_control(EX_control_latch), 
+							 .sel_a_forwarding(forward_sel_a), 
+							 .sel_b_forwarding(forward_sel_b), 
+							 .bus_a(bus_a_latch), 
+							 .bus_b(bus_b_latch), 
+							 .alu_out_forwarded(ALU_out_latch), 
+							 .bus_w_forwarded(busw), 
+							 .immed_ext(immed_ext_latch), 
+							 .instruc(instruc_latch_ID_EX), 
+							 .zero(zero), 
+							 .ALU_out(ALU_out), 
+							 .data_write(data_write), 
+							 .WB_register(rw)
+							 );
+
 
 //wire [3:0]M_control;
 //wire [1:0]WB_control;
 
 wire [31:0] data_write_latch;
-wire [31:0] ALU_out_latch;
 wire [1:0] M_control_latch_EX_MEM;
 wire [1:0] WB_control_latch_EX_MEM; 
 wire [4:0] rw_latch_EX_MEM;
@@ -186,14 +205,15 @@ write_back WB_instance(
 						.bus_w(busw)
     );
 
-/*forwarding_unit forward_unit (
-    .rt(instruc_latch_IF_ID[X:X]), 
-    .rs(instruc_latch_IF_ID[X:X]), 
-    .rw_EX_MEM(rw_EX_MEM), 
-    .rw_MEM_WB(rw_MEM_WB), 
-    .mem_read_MEM_ctrl(mem_read_MEM_ctrl), 
-    .write_reg_WB_ctrl(write_reg_WB_ctrl), 
-    .mux_ALU_a(mux_ALU_a), 
-    .mux_ALU_b(mux_ALU_b)
-    );*/	 
+forwarding_unit forward_unit (
+    .rt(instruc_latch_ID_EX[20:16]), 
+    .rs(instruc_latch_ID_EX[25:21]), 
+    .rw_EX_MEM(rw_latch_EX_MEM), 
+    .rw_MEM_WB(rw_latch_MEM_WB), 
+    .mem_read_MEM_ctrl(M_control_latch_EX_MEM[1]), 
+    .write_reg_WB_ctrl(WB_control_latch_MEM_WB[1]), 
+    .mux_ALU_a(forward_sel_a), 
+    .mux_ALU_b(forward_sel_b)
+    );
+	 
 endmodule

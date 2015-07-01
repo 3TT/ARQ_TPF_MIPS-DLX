@@ -34,10 +34,14 @@ module forwarding_unit(input [4:0] rt,
 	begin
 		//mux_ALU_a = mux_ALU_a;
 		//mux_ALU_b = mux_ALU_b;
-		if((write_reg_WB_ctrl == 1)&& (rw_EX_MEM !=0) && (rw_EX_MEM == rs))
+		if((write_reg_WB_ctrl == 1)
+		&& (rw_EX_MEM !=0) 
+		&& (rw_EX_MEM == rs))
 			mux_ALU_a = 2'b10;
-		else if((mem_read_MEM_ctrl == 1) && (rw_MEM_WB !=0) && (rw_MEM_WB == rs))
-			mux_ALU_a = 2'b01;
+		else if((mem_read_MEM_ctrl == 0) //Compara con cero porque con 1 escribe en memoria y con cero lee
+				&& (rw_MEM_WB !=0) 
+				&& (rw_MEM_WB == rs))
+					mux_ALU_a = 2'b01;
 		else 
 			mux_ALU_a = 2'b00;
 			

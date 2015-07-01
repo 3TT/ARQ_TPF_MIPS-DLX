@@ -27,9 +27,9 @@ module control_unit(input [5:0] opcode,
 
 initial
 	begin
-		EX_control = 4'b0000;
-		M_control = 2'b00;
-		WB_control = 2'b00;
+		EX_control = 4'b0000;//RegDest	| AluSrc	| 2'bAluOP
+		M_control = 2'b00;//memWrite	| Branch
+		WB_control = 2'b00;//RegWrite | MemToReg
 		DE_control = 2'b00;
 	end
 

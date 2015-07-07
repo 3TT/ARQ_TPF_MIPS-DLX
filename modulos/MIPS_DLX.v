@@ -30,8 +30,10 @@ wire [31:0] instruc;
 wire [9:0] PC_plus_1;
 wire [9:0] jump_address;
 wire PC_sel;
+wire PC_write;
 
 instruction_fetch IF_instance(
+		.PC_write(PC_write),
 		.PC_sel(PC_sel),
 		.clock(clock),
 		.jump_address(jump_address),
@@ -59,7 +61,7 @@ wire [1:0]WB_control;
 wire [31:0] busw;
 wire [4:0] rw_latch_MEM_WB;
 wire [1:0] WB_control_latch_MEM_WB; 
-
+wire mux_ctrl_signal_sel;
 
 instruction_decode ID_instance(.instruc(instruc_latch_IF_ID),
 									.clock(clock),
@@ -67,6 +69,7 @@ instruction_decode ID_instance(.instruc(instruc_latch_IF_ID),
 									.rw(rw_latch_MEM_WB),
 									.current_PC(PC_plus_1_latch),
 									.busw(busw),
+									.mux_ctrl_signal_sel(mux_ctrl_signal_sel),
 									.reg_write(WB_control_latch_MEM_WB[1]),
 									.EX_control(EX_control),
 									.M_control(M_control), //Agregamos un bit de control para los brach, es el bit menos significativo, es BOP (Brach Operation).
@@ -215,5 +218,13 @@ forwarding_unit forward_unit (
     .mux_ALU_a(forward_sel_a), 
     .mux_ALU_b(forward_sel_b)
     );
-	 
+
+hazard_detection_unit hazard_detection_unit (
+    .mem_read_MEM_ctrl(M_control_latch_ID_EX[1]), 
+    .rs_IF_ID(instruc_latch_IF_ID[25:21]),
+    .rt_IF_ID(instruc_latch_IF_ID[20:16]),
+    .rt_ID_EX(instruc_latch_ID_EX[20:16]),
+    .PC_write(PC_write),
+    .mux_ctrl_signal_sel(mux_ctrl_signal_sel)
+    );	 
 endmodule

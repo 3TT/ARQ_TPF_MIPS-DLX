@@ -29,6 +29,7 @@ parameter width = 10;
 input  [width-1:0]in_a;
 input  [width-1:0]in_b;
 output [width-1:0]sum;
+
 assign sum = in_a + in_b;
 
 endmodule

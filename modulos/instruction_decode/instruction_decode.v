@@ -25,6 +25,7 @@ module instruction_decode(input [31:0] instruc,
 									input [4:0] rw,
 									input reg_write,
 									input [31:0] busw,
+									input mux_ctrl_signal_sel,
 									output [3:0] EX_control,
 									output [1:0] M_control,
 									output [1:0] WB_control,
@@ -80,13 +81,28 @@ register_bank registers(
 							.bus_b(bus_b)
     );
 	 
+wire [3:0] EX_control_out;
+wire [1:0] M_control_out;
+wire [1:0] WB_control_out;
+
 control_unit ctrl_unit( .opcode(instruc[31:26]),
 							.DE_control(DE_control),
-							.EX_control(EX_control),
-							.M_control(M_control),
-							.WB_control(WB_control)
+							.EX_control(EX_control_out),
+							.M_control(M_control_out),
+							.WB_control(WB_control_out)
     );
 
+wire [7:0] control;
 
+mux_2to1 #(8) mux_ctrl_signal (
+    .in_a(8'b0), 
+    .in_b({EX_control_out,M_control_out,WB_control_out}), 
+    .sel(mux_ctrl_signal_sel), 
+    .out(control)
+    );
+
+assign EX_control = control[7:4];
+assign M_control = control[3:2];
+assign WB_control = control[1:0];
 
 endmodule

@@ -40,6 +40,7 @@ module forwarding_unit(input [4:0] rt,
 			mux_ALU_a = 2'b10;
 		else if((mem_read_MEM_ctrl == 0) //Compara con cero porque con 1 escribe en memoria y con cero lee
 				&& (rw_MEM_WB !=0) 
+				&& (rw_EX_MEM != rs)//Control para los hazards de memoria cuando el resultado depende de la unidad de ejecución
 				&& (rw_MEM_WB == rs))
 					mux_ALU_a = 2'b01;
 		else 
@@ -50,7 +51,8 @@ module forwarding_unit(input [4:0] rt,
 			&& (rw_EX_MEM == rt))
 			mux_ALU_b = 2'b10;
 		else if(mem_read_MEM_ctrl 
-			&& (rw_MEM_WB !=0) 
+			&& (rw_MEM_WB !=0)
+			&& (rw_EX_MEM != rt)//Control para los hazards de memoria cuando el resultado depende de la unidad de ejecución
 			&& (rw_MEM_WB == rt))
 			mux_ALU_b = 2'b01;
 		else

@@ -44,13 +44,16 @@ module MIPS_DLX_tb;
 		reset = 1'b1;
 
 		// Wait 100 ns for global reset to finish
-		#100;
+		#15;
         
 		// Add stimulus here
 
 	end
 	
       always #5 clock=!clock;
+		
+		initial 
+		#130  $finish; 
 		
 endmodule
 

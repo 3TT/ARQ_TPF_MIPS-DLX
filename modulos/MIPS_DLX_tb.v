@@ -53,7 +53,7 @@ module MIPS_DLX_tb;
       always #5 clock=!clock;
 		
 		initial 
-		#130  $finish; 
+		#500  $finish; 
 		
 endmodule
 

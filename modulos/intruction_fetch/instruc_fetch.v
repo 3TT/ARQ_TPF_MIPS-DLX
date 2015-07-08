@@ -31,7 +31,7 @@ module instruction_fetch(
 wire [9:0] PC;
 wire [9:0] PC_current;
 	 
-instruc_mem im(
+intruc_mem_bucle_4 im(
   .clka(clock),
   .wea(1'b0),
   .addra(PC_current),

@@ -38,16 +38,18 @@ instruction_fetch IF_instance(
 		.clock(clock),
 		.jump_address(jump_address),
 		.instruc(instruc),
-		.PC_plus_1(PC_plus_1)
+		.PC_current(PC_plus_1)
     );
 
 wire [31:0] instruc_latch_IF_ID;
 wire [9:0] PC_plus_1_latch;
 
-
+wire IF_ID_write;
+//wire IF_ID_clock = clock && IF_ID_write;
 IF_ID IF_ID_latch(.enable(clock),
 				 .reset(reset),
 				 .instruc_in(instruc),
+				 .IF_ID_write(IF_ID_write),
 				 .PC_plus_1_in(PC_plus_1),
 				 .instruc_out(instruc_latch_IF_ID),
 				 .PC_plus_1_out(PC_plus_1_latch)
@@ -221,10 +223,12 @@ forwarding_unit forward_unit (
 
 hazard_detection_unit hazard_detection_unit (
     .mem_read_MEM_ctrl(M_control_latch_ID_EX[1]), 
+ //   .mem_read_MEM_ctrl(M_control_latch_ID_EX[1]), 
     .rs_IF_ID(instruc_latch_IF_ID[25:21]),
     .rt_IF_ID(instruc_latch_IF_ID[20:16]),
     .rt_ID_EX(instruc_latch_ID_EX[20:16]),
     .PC_write(PC_write),
-    .mux_ctrl_signal_sel(mux_ctrl_signal_sel)
+    .mux_ctrl_signal_sel(mux_ctrl_signal_sel),
+	 .IF_ID_write(IF_ID_write)
     );	 
 endmodule

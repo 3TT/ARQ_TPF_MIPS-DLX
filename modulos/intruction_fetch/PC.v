@@ -29,9 +29,9 @@ initial PC_current = 0;
 always@ (posedge clock)
 begin
 	if(PC_write)
-		PC_current=PC_new;
+		PC_current<=PC_new;
 	else
-		PC_current=PC_current;
+		PC_current<=PC_current;
 end
 
 

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/home/steve07-ubuntu/workspace.ise/TPF_MIPS_DLX/MIPS_DLX_tb_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="MIPS_DLX_tb" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="25" />
+   <wvobject fp_name="/MIPS_DLX_tb/zero" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">zero</obj_property>
+      <obj_property name="ObjectShortName">zero</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/clock" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clock</obj_property>
+      <obj_property name="ObjectShortName">clock</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/IF_instance/instruc" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">instruc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">instruc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/IF_instance/PC_write" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">PC_write</obj_property>
+      <obj_property name="ObjectShortName">PC_write</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/IF_instance/pc_reg/PC_current" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">PC_current[9:0]</obj_property>
+      <obj_property name="ObjectShortName">PC_current[9:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/reset" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/ID_instance/registers/registro[0]" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">[0,31:0]</obj_property>
+      <obj_property name="ObjectShortName">registro[0,31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/ID_instance/registers/registro[1]" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">[1,31:0]</obj_property>
+      <obj_property name="ObjectShortName">registro[1,31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/ID_instance/registers/registro[2]" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">[2,31:0]</obj_property>
+      <obj_property name="ObjectShortName">registro[2,31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/ID_instance/registers/registro[3]" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">[3,31:0]</obj_property>
+      <obj_property name="ObjectShortName">registro[3,31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/ID_instance/registers/registro[4]" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">[4,31:0]</obj_property>
+      <obj_property name="ObjectShortName">registro[4,31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/ID_instance/registers/registro[5]" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">[5,31:0]</obj_property>
+      <obj_property name="ObjectShortName">registro[5,31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/ID_instance/registers/registro[6]" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">[6,31:0]</obj_property>
+      <obj_property name="ObjectShortName">registro[6,31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/ID_instance/registers/registro[7]" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">[7,31:0]</obj_property>
+      <obj_property name="ObjectShortName">registro[7,31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/ID_instance/registers/registro[8]" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">[8,31:0]</obj_property>
+      <obj_property name="ObjectShortName">registro[8,31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/ID_instance/registers/registro[9]" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">[9,31:0]</obj_property>
+      <obj_property name="ObjectShortName">registro[9,31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/hazard_detection_unit/mem_read_MEM_ctrl" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_read_MEM_ctrl</obj_property>
+      <obj_property name="ObjectShortName">mem_read_MEM_ctrl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/hazard_detection_unit/rs_IF_ID" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">rs_IF_ID[4:0]</obj_property>
+      <obj_property name="ObjectShortName">rs_IF_ID[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/hazard_detection_unit/rt_IF_ID" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">rt_IF_ID[4:0]</obj_property>
+      <obj_property name="ObjectShortName">rt_IF_ID[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/hazard_detection_unit/rt_ID_EX" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">rt_ID_EX[4:0]</obj_property>
+      <obj_property name="ObjectShortName">rt_ID_EX[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/hazard_detection_unit/PC_write" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">PC_write</obj_property>
+      <obj_property name="ObjectShortName">PC_write</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/hazard_detection_unit/mux_ctrl_signal_sel" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mux_ctrl_signal_sel</obj_property>
+      <obj_property name="ObjectShortName">mux_ctrl_signal_sel</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/EX_instance/ALU/a" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">a[31:0]</obj_property>
+      <obj_property name="ObjectShortName">a[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/EX_instance/ALU/b" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">b[31:0]</obj_property>
+      <obj_property name="ObjectShortName">b[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/MIPS_DLX_tb/uut/EX_instance/ALU/resultado" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">resultado[32:0]</obj_property>
+      <obj_property name="ObjectShortName">resultado[32:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+</wave_config>

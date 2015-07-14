@@ -222,13 +222,13 @@ forwarding_unit forward_unit (
     );
 
 hazard_detection_unit hazard_detection_unit (
-    .mem_read_MEM_ctrl(M_control_latch_ID_EX[1]), 
- //   .mem_read_MEM_ctrl(M_control_latch_ID_EX[1]), 
+    .mem_read_MEM_ctrl(M_control_latch_ID_EX[1]),
     .rs_IF_ID(instruc_latch_IF_ID[25:21]),
     .rt_IF_ID(instruc_latch_IF_ID[20:16]),
     .rt_ID_EX(instruc_latch_ID_EX[20:16]),
     .PC_write(PC_write),
     .mux_ctrl_signal_sel(mux_ctrl_signal_sel),
 	 .IF_ID_write(IF_ID_write)
-    );	 
+    );
+
 endmodule

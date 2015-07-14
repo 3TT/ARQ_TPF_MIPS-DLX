@@ -31,8 +31,9 @@ module instruction_fetch(
 
 wire [9:0] PC;
 wire [9:0] PC_plus_1;
+wire PC_enable;
 	 
-instruc_mem_loop_4 im(
+instruc_mem im(
   .clka(clock),
   .wea(1'b0),
   .addra(PC_current),
@@ -47,11 +48,11 @@ mux_2to1 #(10) mux (
 	.sel(PC_sel),
 	.out(PC)
     );
-	 
+ 
 PC pc_reg(
 	.PC_write(PC_write),
 	.PC_new(PC),			//direccion que entra al PC, es la que sale del sumador o que viene desde un jump
-	.clock(clock),
+	.clock(!clock),
 	.PC_current(PC_current)		//direccion que sale del PC, es la que va la Memoria de Instrucciones.
     );
 	 

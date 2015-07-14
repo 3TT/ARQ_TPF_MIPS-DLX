@@ -38,19 +38,21 @@ begin
 		PC_plus_1_out <= 0;
 	end
 	else
+	begin
 		if(enable)
+		begin
+			if(!IF_ID_write)
 			begin
-				if(!IF_ID_write)
-					begin
-						instruc_out <= instruc_out;
-						PC_plus_1_out <= PC_plus_1_out;
-					end
-				else
-					begin
-					instruc_out <= instruc_in;
-					PC_plus_1_out <= PC_plus_1_in - 1;
-					end		
-			end		
+				instruc_out <= instruc_out;
+				PC_plus_1_out <= PC_plus_1_out;
+			end
+			else
+			begin
+				instruc_out <= instruc_in;
+				PC_plus_1_out <= PC_plus_1_in - 1;//ESTE MENOS UNO ES PARA QUE CONICIDAN EL ORDEN DEL PC Y LA INTRUCCION.
+			end
+		end
+	end
 end
 
 

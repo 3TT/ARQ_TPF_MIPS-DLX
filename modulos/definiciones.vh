@@ -3,26 +3,32 @@
 `define BUS_OP 4 				//cantidad de bits de operaciones
 `define BUS_OP_MSB `BUS_OP-1 	//cantidad MENOS UNO de bits de operaciones
 
-`define ADD  `BUS_OP'b0010
-`define SUB  `BUS_OP'b0110
-`define AND  `BUS_OP'b0000
-`define OR   `BUS_OP'b0001
-`define NOR  `BUS_OP'b0011
-`define XOR  `BUS_OP'b0100
+`define ADD  	`BUS_OP'b0010
+//`define ADDI 	`BUS_OP'b0010
+`define SUB  	`BUS_OP'b0110
+`define AND  	`BUS_OP'b0000
+//`define ANDI 	`BUS_OP'b0000
+`define OR   	`BUS_OP'b0001
+//`define ORI 		`BUS_OP'b0001
+`define NOR 	`BUS_OP'b0011
+`define XOR  	`BUS_OP'b0100
+//`define XORI 	`BUS_OP'b0100
 
-`define SLL  `BUS_OP'b0101
-`define SRL  `BUS_OP'b1010
-`define SRA  `BUS_OP'b1100
-`define SLLV `BUS_OP'b1001
-`define SRLV `BUS_OP'b1011
-`define SRAV `BUS_OP'b1101
+`define SLL  	`BUS_OP'b0101
+`define SRL  	`BUS_OP'b1010
+`define SRA  	`BUS_OP'b1100
+`define SLLV 	`BUS_OP'b1001
+`define SRLV 	`BUS_OP'b1011
+`define SRAV 	`BUS_OP'b1101
 
-`define ADDU `BUS_OP'b1110
-`define SUBU `BUS_OP'b1111
+`define ADDU 	`BUS_OP'b1110
+`define SUBU 	`BUS_OP'b1111
 
-`define SLT  `BUS_OP'b0111
-`define SLTU `BUS_OP'b1000
+`define SLT  	`BUS_OP'b0111
+//`define SLTI 	`BUS_OP'b0111
+`define SLTU 	`BUS_OP'b1000
 
+`define J 			`BUS_OP'b100001//VER QUE VALOR VA ACA
 
 /*
 `define ADD  `BUS_OP'b100000

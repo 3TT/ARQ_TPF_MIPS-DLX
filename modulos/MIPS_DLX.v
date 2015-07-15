@@ -28,7 +28,7 @@ module MIPS_DLX(input clock,
 
 wire [31:0] instruc;
 wire [9:0] PC_plus_1;
-wire [9:0] jump_address;
+wire [9:0] branch_address;
 wire PC_sel;
 wire PC_write;
 
@@ -36,7 +36,7 @@ instruction_fetch IF_instance(
 		.PC_write(PC_write),
 		.PC_sel(PC_sel),
 		.clock(clock),
-		.jump_address(jump_address),
+		.branch_address(branch_address),
 		.instruc(instruc),
 		.PC_current(PC_plus_1)
     );
@@ -50,6 +50,7 @@ IF_ID IF_ID_latch(.enable(clock),
 				 .reset(reset),
 				 .instruc_in(instruc),
 				 .IF_ID_write(IF_ID_write),
+				 .branch_taken(PC_sel), 
 				 .PC_plus_1_in(PC_plus_1),
 				 .instruc_out(instruc_latch_IF_ID),
 				 .PC_plus_1_out(PC_plus_1_latch)
@@ -79,7 +80,7 @@ instruction_decode ID_instance(.instruc(instruc_latch_IF_ID),
 									.bus_a(bus_a),
 									.bus_b(bus_b),
 									.immed_ext(immed_ext),
-									.jump_address(jump_address),
+									.jump_address(branch_address),
 									.branch_sel(PC_sel)
     );
 
@@ -157,19 +158,19 @@ wire [1:0] WB_control_latch_EX_MEM;
 wire [4:0] rw_latch_EX_MEM;
 
 EX_MEM EX_MEM_latch (
-    .enable(clock), 
-    .reset(reset), 
-    .M_control_in(M_control_latch_ID_EX), 
-    .WB_control_in(WB_control_latch_ID_EX), 
-    .ALU_out_in(ALU_out), 
-    .data_write_in(data_write), 
-    .rw_in(rw), 
-    .M_control_out(M_control_latch_EX_MEM), 
-    .WB_control_out(WB_control_latch_EX_MEM), 
-    .ALU_out_out(ALU_out_latch), 
-    .data_write_out(data_write_latch), 
-    .rw_out(rw_latch_EX_MEM)
-    );
+											 .enable(clock), 
+											 .reset(reset), 
+											 .M_control_in(M_control_latch_ID_EX), 
+											 .WB_control_in(WB_control_latch_ID_EX), 
+											 .ALU_out_in(ALU_out), 
+											 .data_write_in(data_write), 
+											 .rw_in(rw), 
+											 .M_control_out(M_control_latch_EX_MEM), 
+											 .WB_control_out(WB_control_latch_EX_MEM), 
+											 .ALU_out_out(ALU_out_latch), 
+											 .data_write_out(data_write_latch), 
+											 .rw_out(rw_latch_EX_MEM)
+											 );
 
 							
 //wire [31:0] data_write; 
@@ -177,58 +178,57 @@ wire[31:0]data_from_mem;
 wire[31:0]data_from_ALU;
 		
 data_memory DM_instance(
-						.clock(clock),
-						.M_control(M_control_latch_EX_MEM),
-						.data_write(data_write_latch),
-						.ALU_out(ALU_out_latch),	//salida puenteada de la etapa anterior(igual a address)
-						.data_from_mem(data_from_mem),
-						.data_from_ALU(data_from_ALU)
-
-    );							
+													.clock(clock),
+													.M_control(M_control_latch_EX_MEM),
+													.data_write(data_write_latch),
+													.ALU_out(ALU_out_latch),	//salida puenteada de la etapa anterior(igual a address)
+													.data_from_mem(data_from_mem),
+													.data_from_ALU(data_from_ALU)
+													);							
 
 //wire [31:0] data_write; 
 wire[31:0] data_from_mem_latch;
 wire[31:0] data_from_ALU_latch;
 							
 MEM_WB MEM_WB_latch  (
-    .enable(clock), 
-    .reset(reset), 
-    .WB_control_in(WB_control_latch_EX_MEM), 
-    .data_from_mem_in(data_from_mem), 
-    .data_from_ALU_in(data_from_ALU), 
-    .rw_in(rw_latch_EX_MEM), 
-    .WB_control_out(WB_control_latch_MEM_WB), 
-    .data_from_mem_out(data_from_mem_latch), 
-    .data_from_ALU_out(data_from_ALU_latch), 
-    .rw_out(rw_latch_MEM_WB)
-    );
+												 .enable(clock), 
+												 .reset(reset), 
+												 .WB_control_in(WB_control_latch_EX_MEM), 
+												 .data_from_mem_in(data_from_mem), 
+												 .data_from_ALU_in(data_from_ALU), 
+												 .rw_in(rw_latch_EX_MEM), 
+												 .WB_control_out(WB_control_latch_MEM_WB), 
+												 .data_from_mem_out(data_from_mem_latch), 
+												 .data_from_ALU_out(data_from_ALU_latch), 
+												 .rw_out(rw_latch_MEM_WB)
+												 );
 							
 write_back WB_instance(
-						.WB_control(WB_control_latch_MEM_WB[0]),
-						.data_from_mem(data_from_mem_latch),
-						.data_from_ALU(data_from_ALU_latch),
-						.bus_w(busw)
-    );
+												.WB_control(WB_control_latch_MEM_WB[0]),
+												.data_from_mem(data_from_mem_latch),
+												.data_from_ALU(data_from_ALU_latch),
+												.bus_w(busw)
+												);
 
 forwarding_unit forward_unit (
-    .rt(instruc_latch_ID_EX[20:16]), 
-    .rs(instruc_latch_ID_EX[25:21]), 
-    .rw_EX_MEM(rw_latch_EX_MEM), 
-    .rw_MEM_WB(rw_latch_MEM_WB), 
-    .mem_read_MEM_ctrl(M_control_latch_EX_MEM[1]), 
-    .write_reg_WB_ctrl(WB_control_latch_MEM_WB[1]), 
-    .mux_ALU_a(forward_sel_a), 
-    .mux_ALU_b(forward_sel_b)
-    );
+														 .rt(instruc_latch_ID_EX[20:16]), 
+														 .rs(instruc_latch_ID_EX[25:21]), 
+														 .rw_EX_MEM(rw_latch_EX_MEM), 
+														 .rw_MEM_WB(rw_latch_MEM_WB), 
+														 .mem_read_MEM_ctrl(M_control_latch_EX_MEM[1]), 
+														 .write_reg_WB_ctrl(WB_control_latch_MEM_WB[1]), 
+														 .mux_ALU_a(forward_sel_a), 
+														 .mux_ALU_b(forward_sel_b)
+														 );
 
 hazard_detection_unit hazard_detection_unit (
-    .mem_read_MEM_ctrl(M_control_latch_ID_EX[1]),
-    .rs_IF_ID(instruc_latch_IF_ID[25:21]),
-    .rt_IF_ID(instruc_latch_IF_ID[20:16]),
-    .rt_ID_EX(instruc_latch_ID_EX[20:16]),
-    .PC_write(PC_write),
-    .mux_ctrl_signal_sel(mux_ctrl_signal_sel),
-	 .IF_ID_write(IF_ID_write)
-    );
+																					 .mem_read_MEM_ctrl(M_control_latch_ID_EX[1]),
+																					 .rs_IF_ID(instruc_latch_IF_ID[25:21]),
+																					 .rt_IF_ID(instruc_latch_IF_ID[20:16]),
+																					 .rt_ID_EX(instruc_latch_ID_EX[20:16]),
+																					 .PC_write(PC_write),
+																					 .mux_ctrl_signal_sel(mux_ctrl_signal_sel),
+																					 .IF_ID_write(IF_ID_write)
+																					 );
 
 endmodule

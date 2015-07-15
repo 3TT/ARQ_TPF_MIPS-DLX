@@ -22,8 +22,8 @@ module instruction_fetch(
 		input PC_sel,
 		input clock,
 		input PC_write,
-		input [9:0]jump_address,
-		input [9:0]PC_IF_ID,
+		input [9:0]branch_address,
+		//input [9:0]PC_IF_ID,
 		output [31:0]instruc,
 		output [9:0]PC_current
     );
@@ -32,7 +32,8 @@ module instruction_fetch(
 wire [9:0] PC;
 wire [9:0] PC_plus_1;
 wire PC_enable;
-	 
+wire jump_sel;
+
 instruc_mem im(
   .clka(clock),
   .wea(1'b0),
@@ -40,18 +41,37 @@ instruc_mem im(
   .dina(0),
   .douta(instruc)
 );
+/*
+mux_3to1 #(10) mux_PC (
+    .in_a(PC_plus_1), 
+    .in_b(branch_address), 
+    .in_c(instruc[9:0]), 
+    .sel({PC_sel,jump_sel}), 
+    .out(PC)
+    );
+*/
+wire [9:0]PC_or_jump_address;
 
+
+	 /*
 mux_2to1 #(10) mux (
 	.in_a(PC_plus_1),
 	//.in_a(PC_IF_ID),
-	.in_b(jump_address),
+	.in_b(branch_address),
 	.sel(PC_sel),
 	.out(PC)
     );
- 
+ */
+ mux_2to1 #(10) mux_PC_jump (
+	.in_a(PC_plus_1),
+	.in_b(instruc[9:0]),
+	.sel(jump_sel),
+	.out(PC_or_jump_address)
+    );
+	 
 PC pc_reg(
 	.PC_write(PC_write),
-	.PC_new(PC),			//direccion que entra al PC, es la que sale del sumador o que viene desde un jump
+	.PC_new(PC_or_jump_address),			//direccion que entra al PC, es la que sale del sumador o que viene desde un jump
 	.clock(!clock),
 	.PC_current(PC_current)		//direccion que sale del PC, es la que va la Memoria de Instrucciones.
     );
@@ -61,5 +81,11 @@ adder #(10) add_1(
 	.in_b(10'b1),
    .sum(PC_plus_1)
     );
+	 
+jump_decode jump_decode (
+    .opcode(instruc[31:26]), 
+    .jump_sel(jump_sel)
+    );
+
 	 
 endmodule

@@ -18,7 +18,8 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module instruction_decode(input [31:0] instruc,
+module instruction_decode(
+									input [31:0] instruc,
 									input clock,
 									//input reg_write, //Esto esta comentado porque el control unit tenemos que decidir si va afuera del modulo intruction decode o va adentro.
 									input [9:0] current_PC,
@@ -32,10 +33,11 @@ module instruction_decode(input [31:0] instruc,
 									output [31:0] bus_a,
 									output [31:0] bus_b,
 									output reg [31:0] immed_ext,
+									output [9:0] branch_address,
 									output [9:0] jump_address,
-									output branch_sel//Esto va a ser PC_sel...
-									
-    );
+									output branch_sel,//Esto va a ser PC_sel...
+									output jump_sel
+									);
 
 
 
@@ -51,23 +53,42 @@ begin
 end
 
 wire cmp_out;
+wire jump_sel;
 wire [1:0] DE_control;
 
-comparer #(32) branch_cmp(.a(bus_a),
-								  .b(bus_b),
-								  .cmp_out(cmp_out)
-								  );
+comparer #(32) branch_cmp(
+														.a(bus_a),
+														.b(bus_b),
+														.cmp_out(cmp_out)
+														);
+								  
 branch_logic branch_log(
 							.DE_control(DE_control),
 							.cmp(cmp_out),
+							//.jump_sel(jump_sel),
 							.PC_sel(branch_sel)
 							);
 
 adder #(10) add(
-	.in_a(current_PC),
-	.in_b(immed_ext[9:0]),
-   .sum(jump_address)
-    );
+								.in_a(current_PC),
+								.in_b(immed_ext[9:0]),
+								.sum(branch_address)
+								 );
+	
+/*jump_decode jump_decode (
+													 .opcode(instruc[31:26]), 
+													 .jump_sel(jump_sel)
+													 );
+				
+assign jump_address = instruc[9:0];*/		
+		
+/*mux_2to1 instance_name (
+												 .in_a(branch_address), 
+												 .in_b(instruc[9:0]), 
+												 .sel(sel), 
+												 .out(targe_address)
+												 );*/
+
 	 
 register_bank registers(
 							//.reg_write(WB_control[1]),
@@ -100,9 +121,17 @@ mux_2to1 #(8) mux_ctrl_signal (
     .sel(mux_ctrl_signal_sel), 
     .out(control)
     );
-
+	 
 assign EX_control = control[7:4];
 assign M_control = control[3:2];
 assign WB_control = control[1:0];
+
+jump_decode jump_decode (
+													 .opcode(instruc[31:26]), 
+													 .jump_sel(jump_sel)
+													 );
+													 
+assign jump_address = instruc[9:0];
+
 
 endmodule

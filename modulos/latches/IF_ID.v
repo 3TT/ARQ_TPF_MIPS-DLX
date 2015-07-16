@@ -24,6 +24,7 @@ module IF_ID(input enable,
 				 input [9:0]PC_plus_1_in,
 				 input IF_ID_write,
 				 input branch_taken,
+				 input jump_sel,
 				 output reg[31:0]instruc_out,
 				 output reg[9:0]PC_plus_1_out
     );
@@ -33,7 +34,7 @@ initial PC_plus_1_out=0;
 always@(posedge enable, negedge reset, negedge IF_ID_write)
 begin
 
-	if(!reset || branch_taken) //El or con brahc_taken es para hacer el flush del latch
+	if(!reset || branch_taken || jump_sel) //El or con brahc_taken es para hacer el flush del latch
 	begin
 		instruc_out <= 0;
 		PC_plus_1_out <= 0;

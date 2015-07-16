@@ -29,28 +29,44 @@ module MIPS_DLX(input clock,
 wire [31:0] instruc;
 wire [9:0] PC_plus_1;
 wire [9:0] branch_address;
+wire [9:0] jump_address;
 wire PC_sel;
+wire jump_sel;
 wire PC_write;
 
-instruction_fetch IF_instance(
+/*instruction_fetch IF_instance(
 		.PC_write(PC_write),
 		.PC_sel(PC_sel),
 		.clock(clock),
 		.branch_address(branch_address),
 		.instruc(instruc),
 		.PC_current(PC_plus_1)
+    );*/
+	 
+instruction_fetch IF_instance (
+    .PC_sel(PC_sel), 
+    .jump_sel(jump_sel), 
+    .clock(clock), 
+    .PC_write(PC_write), 
+    .branch_address(branch_address), 
+    .jump_address(jump_address), 
+    .instruc(instruc), 
+    .PC_current(PC_plus_1)
     );
+
 
 wire [31:0] instruc_latch_IF_ID;
 wire [9:0] PC_plus_1_latch;
 
 wire IF_ID_write;
 //wire IF_ID_clock = clock && IF_ID_write;
-IF_ID IF_ID_latch(.enable(clock),
+IF_ID IF_ID_latch(
+					.enable(clock),
 				 .reset(reset),
 				 .instruc_in(instruc),
 				 .IF_ID_write(IF_ID_write),
-				 .branch_taken(PC_sel), 
+				 .branch_taken(PC_sel),
+				 .jump_sel(jump_sel),
 				 .PC_plus_1_in(PC_plus_1),
 				 .instruc_out(instruc_latch_IF_ID),
 				 .PC_plus_1_out(PC_plus_1_latch)
@@ -66,7 +82,8 @@ wire [4:0] rw_latch_MEM_WB;
 wire [1:0] WB_control_latch_MEM_WB; 
 wire mux_ctrl_signal_sel;
 
-instruction_decode ID_instance(.instruc(instruc_latch_IF_ID),
+instruction_decode ID_instance(
+									.instruc(instruc_latch_IF_ID),
 									.clock(clock),
 									//input reg_write, //Esto esta comentado porque el control unit tenemos que decidir si va afuera del modulo intruction decode o va adentro.
 									.rw(rw_latch_MEM_WB),
@@ -80,9 +97,12 @@ instruction_decode ID_instance(.instruc(instruc_latch_IF_ID),
 									.bus_a(bus_a),
 									.bus_b(bus_b),
 									.immed_ext(immed_ext),
-									.jump_address(branch_address),
-									.branch_sel(PC_sel)
+									.branch_address(branch_address), 
+									.jump_address(jump_address),
+									.branch_sel(PC_sel),
+									.jump_sel(jump_sel)
     );
+
 
 wire [31:0] instruc_latch_ID_EX;
 //wire [4:0] rw_latch;

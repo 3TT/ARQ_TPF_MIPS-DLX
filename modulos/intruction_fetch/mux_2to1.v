@@ -28,11 +28,13 @@ input [bus_size-1:0]in_b;
 input sel;
 output reg [bus_size-1:0]out;
 
+initial out = 0;
+
 always@(sel,in_a,in_b)
 begin
 	case (sel)
 	2'b0: out = in_a;	
-	2'b1:	out = in_b;
+	2'b1: out = in_b;
 	endcase
 end
 

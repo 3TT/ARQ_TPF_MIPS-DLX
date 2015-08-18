@@ -18,11 +18,13 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
+`include "../definiciones.vh"
+
 module instruction_decode(
 									input [31:0] instruc,
 									input clock,
 									//input reg_write, //Esto esta comentado porque el control unit tenemos que decidir si va afuera del modulo intruction decode o va adentro.
-									input [9:0] current_PC,
+									input [`PC_SIZE:0] current_PC,
 									input [4:0] rw,
 									input reg_write,
 									input [31:0] busw,
@@ -32,9 +34,10 @@ module instruction_decode(
 									output [1:0] WB_control,
 									output [31:0] bus_a,
 									output [31:0] bus_b,
-									output reg [31:0] immed_ext,
-									output [9:0] branch_address,
-									output [9:0] jump_address,
+									//output reg [31:0] immed_ext,
+									output [31:0] immed_ext,
+									output [`PC_SIZE:0] branch_address,
+									output [`PC_SIZE:0] jump_address,
 									output branch_sel,//Esto va a ser PC_sel...
 									output jump_sel
 									);
@@ -47,13 +50,15 @@ module instruction_decode(
 wire [3:0] M_control;
 wire [1:0] WB_control;*/
 
-always @(instruc) //Este es el de la extension de signo.
+assign immed_ext = {{16{instruc[15]}},{instruc[15:0]}};
+
+/*always @(instruc) //Este es el de la extension de signo.
 begin
 	immed_ext = {{16{instruc[15]}},{instruc[15:0]}};
-end
+end*/
 
 wire cmp_out;
-wire jump_sel;
+//wire jump_sel;	//Tira un warning de redeclaracion
 wire [1:0] DE_control;
 
 comparer #(32) branch_cmp(
@@ -69,9 +74,9 @@ branch_logic branch_log(
 							.PC_sel(branch_sel)
 							);
 
-adder #(10) add(
+adder #(`PC_SIZE+1) add(
 								.in_a(current_PC),
-								.in_b(immed_ext[9:0]),
+								.in_b(immed_ext[`PC_SIZE:0]),
 								.sum(branch_address)
 								 );
 	
@@ -131,7 +136,7 @@ jump_decode jump_decode (
 													 .jump_sel(jump_sel)
 													 );
 													 
-assign jump_address = instruc[9:0];
+assign jump_address = instruc[`PC_SIZE:0];
 
 
 endmodule

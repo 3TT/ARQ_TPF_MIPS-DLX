@@ -1,3 +1,13 @@
+`define DEBUG 9
+`define NUM_BYTES 1
+`define BUFFER_SIZE 9
+
+//`define DEBUG 321
+//`define BUFFER_SIZE 327
+//`define NUM_BYTES 41
+
+`define PC_SIZE 5 //5 +1 = 6
+
 `define BUS_DAT 32			//ancho del bus de datos 
 `define BUS_DAT_MSB `BUS_DAT-1 	//ancho del bus de datos MENOS UNO
 `define BUS_OP 4 				//cantidad de bits de operaciones

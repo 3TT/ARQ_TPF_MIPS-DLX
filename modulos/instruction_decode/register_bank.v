@@ -52,7 +52,7 @@ assign bus_b = registro[rb];
 //				registro[rw] = registro[rw];
 //			end
 //	end
-always @(negedge clock)//--> Preguntarle al profe porq quitando el posedge tira latches para cada uno de los bits de los regitros del banco de registro.
+always @(negedge clock)//--> Preguntarle al renzo porq quitando el posedge tira latches para cada uno de los bits de los regitros del banco de registro.
 	begin
 		if(reg_write == 1)
 			registro[rw] = busw;

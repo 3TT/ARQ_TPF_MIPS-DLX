@@ -28,6 +28,8 @@ input [bus_size-1:0]in_c;
 input [1:0]sel;
 output reg [bus_size-1:0]out;
 
+initial out = 0;
+
 always@(sel,in_a,in_b, in_c)
 begin
 	case (sel)

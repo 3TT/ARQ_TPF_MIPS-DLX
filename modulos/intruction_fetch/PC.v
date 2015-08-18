@@ -18,11 +18,15 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
+`include "../definiciones.vh"
+
+
 module PC(
-					input PC_write,
-					input [9:0] PC_new,			//direccion que entra al PC, es la que sale del sumador o que viene desde un jump
 					input clock,
-					output reg [9:0]PC_current		//direccion que sale del PC, es la que va la Memoria de Instrucciones.
+					input enable,
+					input PC_write,
+					input [`PC_SIZE:0] PC_new,			//direccion que entra al PC, es la que sale del sumador o que viene desde un jump
+					output reg [`PC_SIZE:0]PC_current		//direccion que sale del PC, es la que va la Memoria de Instrucciones.
 					);
 
 initial PC_current = 0;
@@ -30,11 +34,17 @@ initial PC_current = 0;
 
 always@ (negedge clock)
 begin
-	if(PC_write)
-		PC_current<=PC_new;
+	if(enable)
+		begin
+			if(PC_write)
+				PC_current<=PC_new;
+			else
+				PC_current<=PC_current;
+		end
 	else
-		PC_current<=PC_current;
+		begin
+			PC_current<=PC_current;
+		end
 end
-
 
 endmodule

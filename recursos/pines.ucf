@@ -1,0 +1,6 @@
+//PIN "clockReductor/clkout1_buf.O" CLOCK_DEDICATED_ROUTE = FALSE;
+
+NET "clock" LOC = V10;
+//NET "reset" LOC = A8;
+NET "tx" LOC = N18;
+NET "rx" LOC = N17;

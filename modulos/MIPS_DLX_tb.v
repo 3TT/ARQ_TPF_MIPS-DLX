@@ -4,10 +4,10 @@
 // Company: 
 // Engineer:
 //
-// Create Date:   18:05:15 05/13/2015
+// Create Date:   17:01:24 08/18/2015
 // Design Name:   MIPS_DLX
-// Module Name:   /home/santi/workspace.ISE/TPF_MIPS-DLX/MIPS_DLX_tb.v
-// Project Name:  TPF_MIPS-DLX
+// Module Name:   /home/laryc05/Workspace.arq/MIPS_enable/MIPS_DLX_tb.v
+// Project Name:  MIPS_enable
 // Target Device:  
 // Tool versions:  
 // Description: 
@@ -26,34 +26,32 @@ module MIPS_DLX_tb;
 
 	// Inputs
 	reg clock;
-	reg reset;
+	reg enable;
 
 	// Outputs
 	wire zero;
-
+	wire [9:0] debug_signal;
 	// Instantiate the Unit Under Test (UUT)
 	MIPS_DLX uut (
 		.clock(clock), 
-		.reset(reset), 
-		.zero(zero)
+		.enable(enable), 
+		.zero(zero),
+		.debug_signal(debug_signal)
 	);
 
 	initial begin
 		// Initialize Inputs
 		clock = 0;
-		reset = 1'b1;
+		enable = 1;
 
 		// Wait 100 ns for global reset to finish
-		#15;
+		#100;
         
 		// Add stimulus here
 
 	end
 	
-      always #5 clock=!clock;
-		
-		initial 
-		#500  $finish; 
-		
+	always #5 clock = !clock;
+      
 endmodule
 

@@ -18,32 +18,51 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
+`include "../definiciones.vh"
+
 module instruction_fetch(
+												input clock,
+												input enable,
 												input PC_sel,
 												input jump_sel,
-												input clock,
 												input PC_write,
-												input [9:0] branch_address,
-												input [9:0] jump_address,
+												input [`PC_SIZE:0] branch_address,
+												input [`PC_SIZE:0] jump_address,
 												//input [9:0]PC_IF_ID,
 												output [31:0]instruc,
-												output [9:0]PC_current
+												output [`PC_SIZE:0]PC_current
 												);
 
-wire [9:0] PC;
-wire [9:0] PC_plus_1;
+wire [`PC_SIZE:0] PC;
+wire [`PC_SIZE:0] PC_plus_1;
 wire PC_enable;
-wire jump_sel;
+//wire jump_sel; //Tira un warning de redeclaracion
 
-instruc_mem im(
+/*instruc_mem im(
 							  .clka(clock),
 							  .wea(1'b0),
 							  .addra(PC_current),
 							  .dina(0),
 							  .douta(instruc)
-								);
+								);*/
+								
+/*instruc_memory im (
+										.clka(clock), // input clka
+										.wea(1'b0), // input [3 : 0] wea
+										.addra(PC_current), // input [31 : 0] addra
+										.dina(0), // input [31 : 0] dina
+										.douta(instruc) // output [31 : 0] douta
+										);*/
 
-mux_3to1 #(10) mux_PC (
+memoria_instruc im (
+										.clka(clock), // input clka
+										.wea(1'b0), // input [0 : 0] wea
+										.addra(PC_current), // input [5 : 0] addra
+										.dina(0), // input [31 : 0] dina
+										.douta(instruc) // output [31 : 0] douta
+										);										
+
+mux_3to1 #(`PC_SIZE+1) mux_PC (
     .in_a(PC_plus_1), 
     .in_b(branch_address), 
     .in_c(jump_address), 
@@ -68,13 +87,14 @@ mux_2to1 #(10) mux_branch (
 														 );*/
 	 
 PC pc_reg(
+					.clock(clock),
+					.enable(enable),
 					.PC_write(PC_write),
 					.PC_new(PC),			//direccion que entra al PC, es la que sale del sumador o que viene desde un jump
-					.clock(clock),
 					.PC_current(PC_current)		//direccion que sale del PC, es la que va la Memoria de Instrucciones.
 					 );
 					 
-adder #(10) add_1(
+adder #(`PC_SIZE+1) add_1(
 									.in_a(PC_current),
 									.in_b(10'b1),
 									.sum(PC_plus_1)
